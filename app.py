@@ -7,7 +7,6 @@ app = Flask(__name__)
 # ТОКЕНИ ХУДРО ИНҶО ГУЗОР
 API_TOKEN = '71876b59812fee6e1539f9365e6a12dd'
 
-# Рӯйхати шаҳрҳо барои интихоб
 CITIES = [
     {'name': 'Душанбе', 'code': 'DYU'},
     {'name': 'Хуҷанд', 'code': 'LBD'},
@@ -36,18 +35,35 @@ def index():
 
     if origin and destination:
         url = "https://api.travelpayouts.com/v1/prices/cheap"
-        params = {'origin': origin, 'destination': destination, 'currency': currency, 'token': API_TOKEN}
+        params = {
+            'origin': origin, 
+            'destination': destination, 
+            'currency': currency, 
+            'token': API_TOKEN
+        }
         try:
-            response = requests.get(url, params=params)
+            response = requests.get(url, params=params, timeout=10)
             data = response.json()
             if data.get('success'):
                 res = data.get('data', {}).get(destination, {})
                 flights = [res[k] for k in res]
-                if not flights: error_msg = "Чипта ёфт нашуд."
+                if not flights:
+                    error_msg = "Дар ин самт чипта ёфт нашуд."
             else:
-                error_msg = "Хатогии API"
-        except:
-            error_msg = "Хатогии пайвастшавӣ"
+                error_msg = "API хатогӣ дод."
+        except Exception as e:
+            error_msg = "Хатогии пайвастшавӣ ба сервер."
 
-    return render_template('index.html', flights=flights, lang=lang, currency=currency, cities=CITIES, t=TEXTS[lang], error_msg=error_msg)
- 71876b59812fee6e1539f9365e6a12dd
+    return render_template(
+        'index.html', 
+        flights=flights, 
+        lang=lang, 
+        currency=currency, 
+        cities=CITIES, 
+        t=TEXTS[lang], 
+        error_msg=error_msg
+    )
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
