@@ -1,23 +1,35 @@
 from flask import Flask, render_template, request
 import requests
+import os
 
 app = Flask(__name__)
 
+# ТОКЕНИ ХУДРО ИНҶО ГУЗОР
 API_TOKEN = '71876b59812fee6e1539f9365e6a12dd'
 
-# Луғати тарҷумаҳо
-texts = {
-    'tg': {'title': 'Ҷустуҷӯи чиптаҳо', 'from': 'Аз куҷо?', 'to': 'Ба куҷо?', 'search': 'Ҷустуҷӯ', 'price': 'Нарх', 'airline': 'Ширкат', 'date': 'Парвоз', 'buy': 'Харидан'},
-    'ru': {'title': 'Поиск билетов', 'from': 'Откуда?', 'to': 'Куда?', 'search': 'Найти', 'price': 'Цена', 'airline': 'Авиакомпания', 'date': 'Вылет', 'buy': 'Купить'},
-    'en': {'title': 'Flight Search', 'from': 'From?', 'to': 'To?', 'search': 'Search', 'price': 'Price', 'airline': 'Airline', 'date': 'Departure', 'buy': 'Buy'}
+# Рӯйхати шаҳрҳо барои интихоб
+CITIES = [
+    {'name': 'Душанбе', 'code': 'DYU'},
+    {'name': 'Хуҷанд', 'code': 'LBD'},
+    {'name': 'Москва', 'code': 'MOW'},
+    {'name': 'Истанбул', 'code': 'IST'},
+    {'name': 'Дубай', 'code': 'DXB'},
+    {'name': 'Тошканд', 'code': 'TAS'},
+    {'name': 'Алмати', 'code': 'ALA'}
+]
+
+TEXTS = {
+    'tg': {'title': 'Чиптаҳои арзон', 'from': 'Аз куҷо?', 'to': 'Ба куҷо?', 'search': 'Ҷустуҷӯ', 'buy': 'Дидани чипта'},
+    'ru': {'title': 'Дешевые билеты', 'from': 'Откуда?', 'to': 'Куда?', 'search': 'Найти', 'buy': 'Купить билет'},
+    'en': {'title': 'Cheap Flights', 'from': 'From?', 'to': 'To?', 'search': 'Search', 'buy': 'View Ticket'}
 }
 
 @app.route('/')
 def index():
     lang = request.args.get('lang', 'tg')
     currency = request.args.get('currency', 'TJS')
-    origin = request.args.get('origin', '').upper()
-    destination = request.args.get('destination', '').upper()
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
     
     flights = []
     error_msg = None
@@ -31,9 +43,11 @@ def index():
             if data.get('success'):
                 res = data.get('data', {}).get(destination, {})
                 flights = [res[k] for k in res]
+                if not flights: error_msg = "Чипта ёфт нашуд."
             else:
-                error_msg = "Error API"
+                error_msg = "Хатогии API"
         except:
-            error_msg = "Connection Error"
+            error_msg = "Хатогии пайвастшавӣ"
 
-    return render_template('index.html', flights=flights, lang=lang, currency=currency, t=texts[lang], error_msg=error_msg)
+    return render_template('index.html', flights=flights, lang=lang, currency=currency, cities=CITIES, t=TEXTS[lang], error_msg=error_msg)
+ 71876b59812fee6e1539f9365e6a12dd
