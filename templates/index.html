@@ -6,111 +6,139 @@
     <title>Avia Premium Search</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --main: #2ecc71; --bg: #f5f7fa; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        :root { --main: #2ecc71; --bg: #f5f7fa; --gray: #95a5a6; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; overflow-x: hidden; }
         
-        /* Сарлавҳаи сабзи мудаввар мисли видео */
+        /* Header */
         .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 80px 20px; border-radius: 0 0 35px 35px; color: white; text-align: center; }
         .header h1 { margin: 0; font-size: 28px; font-weight: 800; }
-        .header p { margin: 5px 0 0 0; opacity: 0.8; font-size: 14px; }
 
-        /* Қуттии ҷустуҷӯ (Search Box) */
+        /* Search Box */
         .search-container { background: white; margin: -55px 20px 20px 20px; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .input-item { background: #f1f3f5; padding: 15px; border-radius: 18px; margin-bottom: 15px; display: flex; align-items: center; }
-        .input-item i { color: #95a5a6; margin-right: 15px; font-size: 20px; }
-        select { border: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; outline: none; -webkit-appearance: none; }
+        .input-item { background: #f1f3f5; padding: 15px; border-radius: 18px; margin-bottom: 12px; display: flex; align-items: center; cursor: pointer; }
+        .input-item i { color: var(--gray); margin-right: 15px; font-size: 18px; }
+        .input-item span { font-size: 16px; font-weight: 600; color: #333; }
 
-        .btn-find { background: var(--main); color: white; border: none; width: 100%; padding: 20px; border-radius: 18px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3); }
+        .btn-find { background: var(--main); color: white; border: none; width: 100%; padding: 18px; border-radius: 18px; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 10px; }
 
-        /* Skeleton Loading аниматсия */
-        .skeleton { height: 160px; background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 25px; margin: 20px; }
+        /* Modal (Саҳифаи интихоби шаҳр мисли видео) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: none; flex-direction: column; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .modal-header { padding: 20px; display: flex; align-items: center; border-bottom: 1px solid #eee; }
+        .modal-header input { flex: 1; border: none; padding: 10px; font-size: 18px; outline: none; }
+        .close-modal { font-size: 24px; color: var(--gray); cursor: pointer; padding-right: 15px; }
+
+        .city-list { overflow-y: auto; padding: 10px 20px; }
+        .city-item { padding: 15px 0; border-bottom: 1px solid #f9f9f9; display: flex; align-items: center; }
+        .city-item i { color: #ccc; margin-right: 15px; }
+        .city-name { font-weight: 600; flex: 1; }
+        .city-code { color: var(--gray); font-size: 14px; }
+
+        /* Skeleton Loading */
+        .skeleton { height: 150px; background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 25px; margin: 20px; }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Карти чиптаи Premium */
-        .ticket { background: white; margin: 20px; padding: 25px; border-radius: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .price { font-size: 24px; font-weight: 900; color: #333; margin-bottom: 20px; }
-        .route { display: flex; justify-content: space-between; align-items: center; }
-        .time { font-size: 22px; font-weight: bold; }
-        .city-code { font-size: 13px; color: #95a5a6; font-weight: 600; margin-top: 5px; }
-        .flight-path { flex-grow: 1; text-align: center; position: relative; margin: 0 25px; border-top: 2px dashed #eee; margin-top: 10px; }
-        .flight-path::after { content: '✈️'; position: absolute; top: -14px; left: 45%; font-size: 14px; background: white; padding: 0 8px; }
-        
-        .airline-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #f8f9fa; padding-top: 20px; }
-        .buy-now { background: #ff9f43; color: white; padding: 12px 25px; border-radius: 15px; text-decoration: none; font-weight: 700; font-size: 14px; }
+        /* Tickets */
+        .ticket { background: white; margin: 15px; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .price { font-size: 22px; font-weight: 900; color: var(--main); }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>AviaSearch</h1>
-    <p>Стандарти ҷаҳонии чиптаҳо</p>
+    <p>Чиптаҳои арзон барои шумо</p>
 </div>
 
 <div class="search-container">
-    <div class="input-item">
+    <div class="input-item" onclick="openModal('origin')">
         <i class="fas fa-plane-departure"></i>
-        <select id="origin">
-            <option value="DYU">Душанбе (DYU)</option>
-            <option value="LBD">Хуҷанд (LBD)</option>
-        </select>
+        <span id="label-origin">Аз куҷо (DYU)</span>
     </div>
-    <div class="input-item">
+    <div class="input-item" onclick="openModal('destination')">
         <i class="fas fa-plane-arrival"></i>
-        <select id="destination">
-            <option value="MOW">Москва (MOW)</option>
-            <option value="TAS">Тошканд (TAS)</option>
-            <option value="IST">Истанбул (IST)</option>
-        </select>
+        <span id="label-dest">Ба куҷо (MOW)</span>
     </div>
-    <button class="btn-find" onclick="search()">Чиптаҳоро ёфтан</button>
-</div>
-
-<div id="loader" style="display:none;">
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
+    <button class="btn-find" onclick="searchFlights()">Чиптаҳоро ёфтан</button>
 </div>
 
 <div id="results"></div>
 
+<div id="cityModal" class="modal">
+    <div class="modal-header">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <input type="text" id="citySearch" placeholder="Шаҳр ё фурудгоҳ" oninput="filterCities()">
+    </div>
+    <div class="city-list" id="cityList">
+        </div>
+</div>
+
 <script>
-async function search() {
-    const results = document.getElementById('results');
-    const loader = document.getElementById('loader');
-    const origin = document.getElementById('origin').value;
-    const dest = document.getElementById('destination').value;
+    let currentTarget = '';
+    const cities = [
+        { name: 'Душанбе', code: 'DYU', country: 'Тоҷикистон' },
+        { name: 'Хуҷанд', code: 'LBD', country: 'Тоҷикистон' },
+        { name: 'Москва', code: 'MOW', country: 'Русия' },
+        { name: 'Истанбул', code: 'IST', country: 'Туркия' },
+        { name: 'Дубай', code: 'DXB', country: 'АМА' },
+        { name: 'Тошканд', code: 'TAS', country: 'Ӯзбекистон' }
+    ];
 
-    results.innerHTML = '';
-    loader.style.display = 'block';
+    function openModal(target) {
+        currentTarget = target;
+        document.getElementById('cityModal').style.display = 'flex';
+        filterCities();
+    }
 
-    try {
+    function closeModal() {
+        document.getElementById('cityModal').style.display = 'none';
+    }
+
+    function selectCity(name, code) {
+        document.getElementById(`label-${currentTarget}`).innerText = `${name} (${code})`;
+        document.getElementById(`label-${currentTarget}`).dataset.code = code;
+        closeModal();
+    }
+
+    function filterCities() {
+        const query = document.getElementById('citySearch').value.toLowerCase();
+        const list = document.getElementById('cityList');
+        list.innerHTML = '';
+        cities.filter(c => c.name.toLowerCase().includes(query)).forEach(c => {
+            list.innerHTML += `
+                <div class="city-item" onclick="selectCity('${c.name}', '${c.code}')">
+                    <i class="fas fa-city"></i>
+                    <div class="city-name">${c.name} <br><small style="color:#aaa">${c.country}</small></div>
+                    <div class="city-code">${c.code}</div>
+                </div>`;
+        });
+    }
+
+    async function searchFlights() {
+        const results = document.getElementById('results');
+        const origin = document.getElementById('label-origin').dataset.code || 'DYU';
+        const dest = document.getElementById('label-dest').dataset.code || 'MOW';
+
+        results.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
+
         const res = await fetch(`/api/search?origin=${origin}&destination=${dest}`);
         const data = await res.json();
-        loader.style.display = 'none';
 
+        results.innerHTML = '';
         if(data.success && data.data.length > 0) {
             data.data.forEach(f => {
                 results.innerHTML += `
-                <div class="ticket">
-                    <div class="price">${f.price} TJS</div>
-                    <div class="route">
-                        <div><div class="time">06:00</div><div class="city-code">${f.origin}</div></div>
-                        <div class="flight-path"></div>
-                        <div style="text-align:right;"><div class="time">10:40</div><div class="city-code">${f.destination}</div></div>
-                    </div>
-                    <div class="airline-info">
-                        <span style="font-weight:bold; color:#7f8c8d;">${f.airline}</span>
-                        <a href="https://www.aviasales.com${f.link}" class="buy-now" target="_blank">Харидан</a>
-                    </div>
-                </div>`;
+                    <div class="ticket">
+                        <div class="price">${f.price} TJS</div>
+                        <div style="margin-top:10px; font-weight:bold;">${f.origin} ✈️ ${f.destination}</div>
+                        <div style="font-size:12px; color:gray; margin-top:5px;">Ширкат: ${f.airline}</div>
+                    </div>`;
             });
         } else {
-            results.innerHTML = '<p style="text-align:center; padding:20px; color:#95a5a6;">Чипта ёфт нашуд</p>';
+            results.innerHTML = '<p style="text-align:center; padding:20px;">Маълумот ёфт нашуд</p>';
         }
-    } catch(e) {
-        loader.style.display = 'none';
-        results.innerHTML = '<p style="text-align:center; color:red;">Хатогии сервер</p>';
     }
-}
 </script>
 </body>
 </html>
