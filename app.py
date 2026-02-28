@@ -14,15 +14,17 @@ def index():
 @app.route('/api/search')
 def search():
     origin = request.args.get('origin', 'DYU')
-    destination = request.args.get('destination', 'MOW')
+    destination = request.args.get('destination', 'DME')
+    depart_date = request.args.get('date', '2026-03-06')
     
     url = "https://api.travelpayouts.com/v3/prices_for_dates"
     params = {
         'origin': origin,
         'destination': destination,
+        'departure_at': depart_date,
         'currency': 'TJS',
         'token': API_TOKEN,
-        'limit': 15
+        'limit': 10
     }
     
     try:
