@@ -16,21 +16,20 @@ def search():
     origin = request.args.get('origin', 'DYU')
     destination = request.args.get('destination', 'MOW')
     
-    # Истифодаи API-и нархҳо барои санаҳои муайян
     url = "https://api.travelpayouts.com/v3/prices_for_dates"
     params = {
         'origin': origin,
         'destination': destination,
         'currency': 'TJS',
         'token': API_TOKEN,
-        'limit': 10
+        'limit': 15
     }
     
     try:
         response = requests.get(url, params=params, timeout=15)
         return jsonify(response.json())
     except:
-        return jsonify({"success": False, "error": "API Error"})
+        return jsonify({"success": False})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
