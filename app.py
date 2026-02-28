@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-# ТОКЕНИ ХУДРО ИНҶО ГУЗОР
+# ТОКЕНИ ХУДРО АЗ TRAVELPAYOUTS ИНҶО ГУЗОР
 API_TOKEN = '71876b59812fee6e1539f9365e6a12dd'
 
 CITIES = [
@@ -18,9 +18,9 @@ CITIES = [
 ]
 
 TEXTS = {
-    'tg': {'title': 'Чиптаҳои арзон', 'from': 'Аз куҷо?', 'to': 'Ба куҷо?', 'search': 'Ҷустуҷӯ', 'buy': 'Дидани чипта'},
-    'ru': {'title': 'Дешевые билеты', 'from': 'Откуда?', 'to': 'Куда?', 'search': 'Найти', 'buy': 'Купить билет'},
-    'en': {'title': 'Cheap Flights', 'from': 'From?', 'to': 'To?', 'search': 'Search', 'buy': 'View Ticket'}
+    'tg': {'title': 'Ҷустуҷӯи чиптаҳо', 'from': 'Аз куҷо?', 'to': 'Ба куҷо?', 'search': 'Ҷустуҷӯ', 'buy': 'Харидан', 'direct': 'Парвози мустақим'},
+    'ru': {'title': 'Поиск билетов', 'from': 'Откуда?', 'to': 'Куда?', 'search': 'Найти', 'buy': 'Купить', 'direct': 'Прямой рейс'},
+    'en': {'title': 'Flight Search', 'from': 'From?', 'to': 'To?', 'search': 'Search', 'buy': 'Buy', 'direct': 'Direct flight'}
 }
 
 @app.route('/')
@@ -35,12 +35,7 @@ def index():
 
     if origin and destination:
         url = "https://api.travelpayouts.com/v1/prices/cheap"
-        params = {
-            'origin': origin, 
-            'destination': destination, 
-            'currency': currency, 
-            'token': API_TOKEN
-        }
+        params = {'origin': origin, 'destination': destination, 'currency': currency, 'token': API_TOKEN}
         try:
             response = requests.get(url, params=params, timeout=10)
             data = response.json()
@@ -48,21 +43,13 @@ def index():
                 res = data.get('data', {}).get(destination, {})
                 flights = [res[k] for k in res]
                 if not flights:
-                    error_msg = "Дар ин самт чипта ёфт нашуд."
+                    error_msg = "Чипта ёфт нашуд."
             else:
-                error_msg = "API хатогӣ дод."
-        except Exception as e:
-            error_msg = "Хатогии пайвастшавӣ ба сервер."
+                error_msg = "Хатогии API"
+        except:
+            error_msg = "Хатогии пайвастшавӣ"
 
-    return render_template(
-        'index.html', 
-        flights=flights, 
-        lang=lang, 
-        currency=currency, 
-        cities=CITIES, 
-        t=TEXTS[lang], 
-        error_msg=error_msg
-    )
+    return render_template('index.html', flights=flights, lang=lang, currency=currency, cities=CITIES, t=TEXTS[lang], error_msg=error_msg)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
