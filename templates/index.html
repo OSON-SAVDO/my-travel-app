@@ -1,68 +1,53 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avia Search - Чиптаҳои арзон</title>
+    <title>{{ t.title }}</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; color: #333; }
-        .container { max-width: 500px; margin: auto; padding: 20px; }
-        .header { text-align: center; padding: 20px 0; color: #007bff; }
-        .search-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        select, input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
-        button { background: #007bff; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #0056b3; }
-        .error { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; margin: 10px 0; border: 1px solid #ffcdd2; }
-        .card { background: white; padding: 15px; margin-top: 15px; border-radius: 12px; border-left: 5px solid #007bff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .price { font-size: 20px; color: #28a745; font-weight: bold; }
-        .info { font-size: 14px; color: #666; margin: 5px 0; }
-        .buy-btn { display: inline-block; background: #ff9800; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; margin-top: 10px; font-size: 14px; }
+        :root { --primary: #00a1ff; --bg: #f5f7f9; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+        .header { background: var(--primary); color: white; padding: 20px; border-radius: 0 0 20px 20px; margin: -15px -15px 20px -15px; text-align: center; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-size: 16px; }
+        button { background: #ff6d00; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .ticket { border-left: 6px solid var(--primary); display: flex; flex-direction: column; }
+        .price { font-size: 24px; color: #2ecc71; font-weight: bold; }
+        .buy-btn { background: var(--primary); text-decoration: none; color: white; text-align: center; padding: 10px; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>✈️ AviaSearch</h1>
-        </div>
+    <div class="header"><h1>✈️ AviaSearch</h1></div>
 
-        <div class="search-box">
-            <form method="GET">
-                <label>Забон / Язык:</label>
-                <select name="lang">
-                    <option value="tg" {% if lang == 'tg' %}selected{% endif %}>Тоҷикӣ</option>
-                    <option value="ru" {% if lang == 'ru' %}selected{% endif %}>Русский</option>
-                    <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+    <div class="card">
+        <form method="GET">
+            <div style="display: flex; gap: 10px;">
+                <select name="lang" onchange="this.form.submit()">
+                    <option value="tg" {% if lang=='tg' %}selected{% endif %}>TJ</option>
+                    <option value="ru" {% if lang=='ru' %}selected{% endif %}>RU</option>
+                    <option value="en" {% if lang=='en' %}selected{% endif %}>EN</option>
                 </select>
-
-                <label>Асъор / Валюта:</label>
-                <select name="currency">
-                    <option value="TJS" {% if currency == 'TJS' %}selected{% endif %}>TJS (Сомонӣ)</option>
-                    <option value="RUB" {% if currency == 'RUB' %}selected{% endif %}>RUB (Рубл)</option>
-                    <option value="USD" {% if currency == 'USD' %}selected{% endif %}>USD (Доллар)</option>
+                <select name="currency" onchange="this.form.submit()">
+                    <option value="TJS" {% if currency=='TJS' %}selected{% endif %}>TJS</option>
+                    <option value="RUB" {% if currency=='RUB' %}selected{% endif %}>RUB</option>
+                    <option value="USD" {% if currency=='USD' %}selected{% endif %}>USD</option>
                 </select>
-
-                <input type="text" name="origin" placeholder="Аз куҷо? (Масалан: DYU)" value="{{ request.args.get('origin', '') }}" required>
-                <input type="text" name="destination" placeholder="Ба куҷо? (Масалан: MOW)" value="{{ request.args.get('destination', '') }}" required>
-                
-                <button type="submit">Ҷустуҷӯ</button>
-            </form>
-        </div>
-
-        {% if error_msg %}
-            <div class="error">{{ error_msg }}</div>
-        {% endif %}
-
-        <div id="results">
-            {% for flight in flights %}
-            <div class="card">
-                <div class="price">{{ flight.price }} {{ currency }}</div>
-                <div class="info"><strong>Ширкат:</strong> {{ flight.airline }}</div>
-                <div class="info"><strong>Парвоз:</strong> {{ flight.departure_at }}</div>
-                <div class="info"><strong>Рақами рейс:</strong> {{ flight.flight_number }}</div>
-                <a class="buy-btn" href="https://www.aviasales.com{{ flight.link }}" target="_blank">Дидани чипта</a>
             </div>
-            {% endfor %}
-        </div>
+            <input type="text" name="origin" placeholder="{{ t.from }} (DYU)" value="{{ request.args.get('origin','') }}">
+            <input type="text" name="destination" placeholder="{{ t.to }} (MOW)" value="{{ request.args.get('destination','') }}">
+            <button type="submit">{{ t.search }}</button>
+        </form>
     </div>
+
+    {% for f in flights %}
+    <div class="card ticket">
+        <div class="price">{{ f.price }} {{ currency }}</div>
+        <div style="margin: 10px 0;">
+            <b>{{ t.airline }}:</b> {{ f.airline }} <br>
+            <b>{{ t.date }}:</b> {{ f.departure_at }}
+        </div>
+        <a class="buy-btn" href="https://www.aviasales.com{{ f.link }}?marker=701004" target="_blank">{{ t.buy }}</a>
+    </div>
+    {% endfor %}
 </body>
 </html>
