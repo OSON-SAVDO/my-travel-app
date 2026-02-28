@@ -3,49 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AviaSearch Pro</title>
+    <title>Avia Search Premium</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --main: #2ecc71; --bg: #f5f7fa; --text: #2d3436; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 20px; color: var(--text); }
+        :root { --main: #2ecc71; --bg: #f5f7fa; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 30px; }
         
-        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 45px 20px 85px 20px; border-radius: 0 0 35px 35px; color: white; text-align: center; }
-        .header h1 { margin: 0; font-size: 30px; font-weight: 800; }
-
-        .search-card { background: white; margin: -60px 20px 20px 20px; padding: 25px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .row-input { background: #f1f3f5; padding: 16px; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; cursor: pointer; transition: 0.2s; }
-        .row-input:active { background: #e9ecef; }
-        .row-input i { color: #95a5a6; margin-right: 15px; font-size: 20px; }
-        .row-input div { display: flex; flex-direction: column; }
-        .label { font-size: 12px; color: #7f8c8d; margin-bottom: 2px; }
-        .value { font-size: 16px; font-weight: 700; }
-
-        .btn-main { background: var(--main); color: white; border: none; width: 100%; padding: 20px; border-radius: 20px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3); margin-top: 10px; }
-
-        /* Модалҳо */
-        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; display: none; flex-direction: column; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 80px 20px; border-radius: 0 0 35px 35px; color: white; text-align: center; }
+        .search-card { background: white; margin: -55px 20px 20px 20px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        .modal-top { padding: 20px; display: flex; align-items: center; border-bottom: 1px solid #eee; }
-        .modal-top input { flex: 1; border: none; padding: 12px; font-size: 18px; outline: none; background: #f8f9fa; border-radius: 12px; }
-        
-        /* Тақвими касбӣ (мисли сонияи 0:09) */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 15px; text-align: center; }
-        .day-header { font-size: 12px; color: #e74c3c; font-weight: bold; padding-bottom: 10px; }
-        .day-box { padding: 12px 5px; border-radius: 12px; position: relative; cursor: pointer; }
-        .day-box.today { background: #f1f3f5; }
-        .day-num { font-size: 16px; font-weight: 600; }
-        .day-price { font-size: 9px; color: var(--main); font-weight: bold; margin-top: 4px; }
+        .input-row { background: #f1f3f5; padding: 15px; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; cursor: pointer; }
+        .input-row i { color: #95a5a6; margin-right: 15px; }
+        .val { font-weight: 700; font-size: 16px; }
 
-        /* Tickets & Skeleton */
+        .btn-find { background: var(--main); color: white; border: none; width: 100%; padding: 18px; border-radius: 20px; font-size: 18px; font-weight: 800; margin-top: 10px; }
+
+        /* Дизайни чипта маҳз мисли видео сонияи 0:32 */
+        .ticket { background: white; margin: 15px; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
+        .t-price { font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 15px; display: block; }
+        
+        .t-info { display: flex; justify-content: space-between; align-items: center; }
+        .t-time { font-size: 20px; font-weight: 800; color: #333; }
+        .t-city { font-size: 12px; color: #95a5a6; font-weight: 600; margin-top: 4px; }
+        
+        .t-path { flex-grow: 1; text-align: center; margin: 0 20px; position: relative; }
+        .t-path-line { border-top: 2px solid #eee; width: 100%; display: block; margin-top: 10px; }
+        .t-path-plane { position: absolute; top: -14px; left: 45%; background: white; padding: 0 5px; font-size: 14px; }
+        .t-duration { font-size: 11px; color: #2ecc71; margin-top: 5px; font-weight: bold; }
+
+        .t-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f9f9f9; }
+        .airline-tag { display: flex; align-items: center; font-weight: 700; color: #7f8c8d; font-size: 13px; }
+        .btn-buy { background: #ff9f43; color: white; padding: 10px 22px; border-radius: 15px; text-decoration: none; font-weight: 800; font-size: 14px; }
+
         .skeleton { height: 160px; background: #eee; border-radius: 25px; margin: 20px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 50% { opacity: 0.5; } }
-        
-        .ticket { background: white; margin: 20px; padding: 25px; border-radius: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.04); }
-        .t-price { font-size: 24px; font-weight: 900; color: #333; }
-        .t-route { display: flex; justify-content: space-between; margin: 20px 0; align-items: center; }
-        .t-line { flex-grow: 1; height: 1px; border-top: 2px dashed #ddd; margin: 0 20px; position: relative; }
-        .t-line::after { content: '✈️'; position: absolute; top: -12px; left: 45%; font-size: 12px; background: white; padding: 0 5px; }
     </style>
 </head>
 <body>
@@ -56,105 +47,65 @@
 </div>
 
 <div class="search-card">
-    <div class="row-input" onclick="openCityModal('origin')">
+    <div class="input-row" onclick="alert('Интихоби шаҳр')">
         <i class="fas fa-plane-departure"></i>
-        <div><span class="label">Аз куҷо</span><span class="value" id="v-origin">Душанбе (DYU)</span></div>
+        <div class="val" id="origin-val">Душанбе (DYU)</div>
     </div>
-    <div class="row-input" onclick="openCityModal('dest')">
+    <div class="input-row" onclick="alert('Интихоби шаҳр')">
         <i class="fas fa-plane-arrival"></i>
-        <div><span class="label">Ба куҷо</span><span class="value" id="v-dest">Москва (MOW)</span></div>
+        <div class="val" id="dest-val">Москва (MOW)</div>
     </div>
-    <div style="display: flex; gap: 10px;">
-        <div class="row-input" style="flex: 1;" onclick="openCalendar()">
-            <i class="far fa-calendar"></i>
-            <div><span class="label">Кай</span><span class="value" id="v-date">11 Март</span></div>
-        </div>
-        <div class="row-input" style="flex: 1;">
-            <i class="fas fa-user"></i>
-            <div><span class="label">Мусофир</span><span class="value">1, Эконом</span></div>
-        </div>
-    </div>
-    <button class="btn-main" onclick="startSearch()">Чиптаҳоро ёфтан</button>
+    <button class="btn-find" onclick="loadTickets()">Чиптаҳоро ёфтан</button>
 </div>
 
 <div id="results"></div>
 
-<div id="m-city" class="full-modal">
-    <div class="modal-top"><span onclick="closeModals()" style="font-size:25px; padding-right:15px;">&times;</span><input type="text" placeholder="Шаҳр ё фурудгоҳ"></div>
-    <div style="padding: 20px;" id="city-list"></div>
-</div>
-
-<div id="m-cal" class="full-modal">
-    <div class="modal-top"><span onclick="closeModals()" style="font-size:25px; padding-right:15px;">&times;</span><h3 style="margin:0">Интихоби сана</h3></div>
-    <div class="calendar-grid" id="cal-grid"></div>
-</div>
-
 <script>
-    let searchData = { origin: 'DYU', dest: 'MOW', date: '2026-03-11' };
-
-    function openCityModal(type) {
-        const list = document.getElementById('city-list');
-        list.innerHTML = `
-            <div style="padding:15px 0; border-bottom:1px solid #eee;" onclick="setCity('${type}','Душанбе','DYU')"><b>Душанбе</b> <small>DYU</small></div>
-            <div style="padding:15px 0; border-bottom:1px solid #eee;" onclick="setCity('${type}','Москва','MOW')"><b>Москва</b> <small>MOW</small></div>
-            <div style="padding:15px 0; border-bottom:1px solid #eee;" onclick="setCity('${type}','Хуҷанд','LBD')"><b>Хуҷанд</b> <small>LBD</small></div>
-        `;
-        document.getElementById('m-city').style.display = 'flex';
-    }
-
-    function setCity(type, name, code) {
-        document.getElementById(`v-${type}`).innerText = `${name} (${code})`;
-        searchData[type] = code;
-        closeModals();
-    }
-
-    function openCalendar() {
-        const grid = document.getElementById('cal-grid');
-        grid.innerHTML = '<div class="day-header">Дш</div><div class="day-header">Сш</div><div class="day-header">Чш</div><div class="day-header">Пш</div><div class="day-header">Ҷм</div><div class="day-header" style="color:#2ecc71">Шб</div><div class="day-header" style="color:#2ecc71">Як</div>';
-        for(let i=1; i<=31; i++) {
-            grid.innerHTML += `<div class="day-box ${i==11?'today':''}" onclick="setDate(${i})">
-                <div class="day-num">${i}</div>
-                <div class="day-price">${Math.floor(Math.random()*2000)+500}</div>
-            </div>`;
-        }
-        document.getElementById('m-cal').style.display = 'flex';
-    }
-
-    function setDate(d) {
-        document.getElementById('v-date').innerText = `${d} Март`;
-        closeModals();
-    }
-
-    function closeModals() {
-        document.querySelectorAll('.full-modal').forEach(m => m.style.display = 'none');
-    }
-
-    async function startSearch() {
-        const resDiv = document.getElementById('results');
-        resDiv.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
-        
-        const response = await fetch(`/api/search?origin=${searchData.origin}&destination=${searchData.dest}`);
+async function loadTickets() {
+    const resDiv = document.getElementById('results');
+    resDiv.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
+    
+    try {
+        const response = await fetch('/api/search?origin=DYU&destination=MOW');
         const data = await response.json();
-        
         resDiv.innerHTML = '';
+
         if(data.success && data.data.length > 0) {
             data.data.forEach(f => {
                 resDiv.innerHTML += `
-                    <div class="ticket">
-                        <div class="t-price">${f.price} TJS</div>
-                        <div class="t-route">
-                            <div><div style="font-size:20px; font-weight:bold;">08:30</div><small>${f.origin}</small></div>
-                            <div class="t-line"></div>
-                            <div style="text-align:right;"><div style="font-size:20px; font-weight:bold;">12:00</div><small>${f.destination}</small></div>
+                <div class="ticket">
+                    <span class="t-price">${f.price} TJS</span>
+                    <div class="t-info">
+                        <div>
+                            <div class="t-time">08:30</div>
+                            <div class="t-city">${f.origin}</div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-weight:700; color:#7f8c8d;">${f.airline}</span>
-                            <a href="#" style="background:#ff9f43; color:white; padding:10px 20px; border-radius:12px; text-decoration:none; font-weight:bold;">Харидан</a>
+                        <div class="t-path">
+                            <span class="t-path-line"></span>
+                            <span class="t-path-plane">✈️</span>
+                            <div class="t-duration">Парвози мустақим</div>
                         </div>
-                    </div>`;
+                        <div style="text-align:right">
+                            <div class="t-time">12:10</div>
+                            <div class="t-city">${f.destination}</div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <div class="airline-tag">
+                            <i class="fas fa-shield-alt" style="margin-right:8px; color:#2ecc71"></i>
+                            ${f.airline}
+                        </div>
+                        <a href="https://www.aviasales.com${f.link}" class="btn-buy" target="_blank">Харидан</a>
+                    </div>
+                </div>`;
             });
+        } else {
+            resDiv.innerHTML = '<p style="text-align:center; color:gray;">Чипта ёфт нашуд</p>';
         }
+    } catch(e) {
+        resDiv.innerHTML = '<p style="text-align:center; color:red;">Хатогии пайвастшавӣ</p>';
     }
+}
 </script>
 </body>
 </html>
