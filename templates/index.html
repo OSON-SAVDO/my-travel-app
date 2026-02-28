@@ -3,57 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Avia Premium</title>
+    <title>Avia Premium Search</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --main: #2ecc71; --bg: #f5f7fa; --card: #ffffff; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding-bottom: 30px; }
+        :root { --main: #2ecc71; --bg: #f5f7fa; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; }
         
-        /* Сарлавҳаи сабз мисли видео */
-        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 70px 20px; border-radius: 0 0 30px 30px; color: white; text-align: center; }
-        .logo { font-size: 26px; font-weight: 800; letter-spacing: -1px; }
+        /* Сарлавҳаи сабзи мудаввар мисли видео */
+        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 80px 20px; border-radius: 0 0 35px 35px; color: white; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; font-weight: 800; }
+        .header p { margin: 5px 0 0 0; opacity: 0.8; font-size: 14px; }
 
-        /* Қуттии ҷустуҷӯ */
-        .search-box { background: var(--card); margin: -45px 15px 20px 15px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .input-row { background: #f1f3f5; padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; align-items: center; }
-        .input-row i { color: #95a5a6; margin-right: 12px; font-size: 18px; }
-        select, input { border: none; background: transparent; width: 100%; font-size: 16px; font-weight: 500; outline: none; }
+        /* Қуттии ҷустуҷӯ (Search Box) */
+        .search-container { background: white; margin: -55px 20px 20px 20px; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .input-item { background: #f1f3f5; padding: 15px; border-radius: 18px; margin-bottom: 15px; display: flex; align-items: center; }
+        .input-item i { color: #95a5a6; margin-right: 15px; font-size: 20px; }
+        select { border: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; outline: none; -webkit-appearance: none; }
 
-        .btn-search { background: var(--main); color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3); }
+        .btn-find { background: var(--main); color: white; border: none; width: 100%; padding: 20px; border-radius: 18px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3); }
 
-        /* Skeleton Loading */
-        .skeleton { height: 140px; background: #e0e0e0; border-radius: 20px; margin: 15px; animation: pulse 1.5s infinite ease-in-out; }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        /* Skeleton Loading аниматсия */
+        .skeleton { height: 160px; background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 25px; margin: 20px; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Карти чипта */
-        .ticket { background: var(--card); margin: 15px; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
-        .price { font-size: 24px; font-weight: 800; color: #2ecc71; margin-bottom: 15px; }
-        .route-row { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
-        .time { font-size: 20px; font-weight: bold; color: #2d3436; }
-        .airport { font-size: 13px; color: #95a5a6; }
-        .path { flex-grow: 1; text-align: center; position: relative; margin: 0 20px; border-top: 2px dashed #eee; margin-top: 10px; }
-        .path::after { content: '✈️'; position: absolute; top: -14px; left: 45%; font-size: 14px; background: white; padding: 0 5px; }
-
-        .airline-box { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f9f9f9; padding-top: 15px; margin-top: 15px; }
-        .buy-link { background: #ff9f43; color: white; padding: 10px 20px; border-radius: 12px; text-decoration: none; font-weight: bold; }
+        /* Карти чиптаи Premium */
+        .ticket { background: white; margin: 20px; padding: 25px; border-radius: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .price { font-size: 24px; font-weight: 900; color: #333; margin-bottom: 20px; }
+        .route { display: flex; justify-content: space-between; align-items: center; }
+        .time { font-size: 22px; font-weight: bold; }
+        .city-code { font-size: 13px; color: #95a5a6; font-weight: 600; margin-top: 5px; }
+        .flight-path { flex-grow: 1; text-align: center; position: relative; margin: 0 25px; border-top: 2px dashed #eee; margin-top: 10px; }
+        .flight-path::after { content: '✈️'; position: absolute; top: -14px; left: 45%; font-size: 14px; background: white; padding: 0 8px; }
+        
+        .airline-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #f8f9fa; padding-top: 20px; }
+        .buy-now { background: #ff9f43; color: white; padding: 12px 25px; border-radius: 15px; text-decoration: none; font-weight: 700; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div class="logo">AviaSearch</div>
-    <p style="opacity: 0.9; font-size: 14px;">Стандарти ҷаҳонии чиптаҳо</p>
+    <h1>AviaSearch</h1>
+    <p>Стандарти ҷаҳонии чиптаҳо</p>
 </div>
 
-<div class="search-box">
-    <div class="input-row">
+<div class="search-container">
+    <div class="input-item">
         <i class="fas fa-plane-departure"></i>
         <select id="origin">
             <option value="DYU">Душанбе (DYU)</option>
             <option value="LBD">Хуҷанд (LBD)</option>
         </select>
     </div>
-    <div class="input-row">
+    <div class="input-item">
         <i class="fas fa-plane-arrival"></i>
         <select id="destination">
             <option value="MOW">Москва (MOW)</option>
@@ -61,50 +62,55 @@
             <option value="IST">Истанбул (IST)</option>
         </select>
     </div>
-    <button class="btn-search" onclick="searchFlights()">Чиптаҳоро ёфтан</button>
+    <button class="btn-find" onclick="search()">Чиптаҳоро ёфтан</button>
+</div>
+
+<div id="loader" style="display:none;">
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
 </div>
 
 <div id="results"></div>
 
 <script>
-async function searchFlights() {
+async function search() {
     const results = document.getElementById('results');
+    const loader = document.getElementById('loader');
     const origin = document.getElementById('origin').value;
-    const destination = document.getElementById('destination').value;
+    const dest = document.getElementById('destination').value;
 
-    // Эффекти Skeleton Loading (мисли видео)
-    results.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+    results.innerHTML = '';
+    loader.style.display = 'block';
 
     try {
-        const response = await fetch(`/api/search?origin=${origin}&destination=${destination}`);
-        const data = await response.json();
+        const res = await fetch(`/api/search?origin=${origin}&destination=${dest}`);
+        const data = await res.json();
+        loader.style.display = 'none';
 
-        if (data.success && data.data.length > 0) {
-            results.innerHTML = '';
+        if(data.success && data.data.length > 0) {
             data.data.forEach(f => {
                 results.innerHTML += `
-                    <div class="ticket">
-                        <div class="price">${f.price} TJS</div>
-                        <div class="route-row">
-                            <div><div class="time">08:00</div><div class="airport">${f.origin}</div></div>
-                            <div class="path"><div style="font-size:10px; color:#aaa; margin-top:5px;">Парвози мустақим</div></div>
-                            <div style="text-align:right;"><div class="time">12:30</div><div class="airport">${f.destination}</div></div>
-                        </div>
-                        <div class="airline-box">
-                            <span style="font-weight:bold; color:#7f8c8d;">${f.airline}</span>
-                            <a href="https://www.aviasales.com${f.link}" class="buy-link" target="_blank">Харидан</a>
-                        </div>
+                <div class="ticket">
+                    <div class="price">${f.price} TJS</div>
+                    <div class="route">
+                        <div><div class="time">06:00</div><div class="city-code">${f.origin}</div></div>
+                        <div class="flight-path"></div>
+                        <div style="text-align:right;"><div class="time">10:40</div><div class="city-code">${f.destination}</div></div>
                     </div>
-                `;
+                    <div class="airline-info">
+                        <span style="font-weight:bold; color:#7f8c8d;">${f.airline}</span>
+                        <a href="https://www.aviasales.com${f.link}" class="buy-now" target="_blank">Харидан</a>
+                    </div>
+                </div>`;
             });
         } else {
-            results.innerHTML = '<p style="text-align:center; color:#95a5a6;">Чипта ёфт нашуд ё хатогии API</p>';
+            results.innerHTML = '<p style="text-align:center; padding:20px; color:#95a5a6;">Чипта ёфт нашуд</p>';
         }
-    } catch (e) {
-        results.innerHTML = '<p style="text-align:center; color:red;">Хатогии пайвастшавӣ</p>';
+    } catch(e) {
+        loader.style.display = 'none';
+        results.innerHTML = '<p style="text-align:center; color:red;">Хатогии сервер</p>';
     }
 }
 </script>
-
 </body>
 </html>
