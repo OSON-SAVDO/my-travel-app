@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 
-# ТОКЕНИ ХУДРО ИНҶО ГУЗОРЕД
+# Токени худро инҷо гузоред
 API_TOKEN = '71876b59812fee6e1539f9365e6a12dd'
 
 @app.route('/')
@@ -14,22 +14,22 @@ def index():
 @app.route('/api/search')
 def search():
     origin = request.args.get('origin', 'DYU')
-    destination = request.args.get('destination', 'MOW')
+    dest = request.args.get('destination', 'MOW')
     
     url = "https://api.travelpayouts.com/v3/prices_for_dates"
     params = {
         'origin': origin,
-        'destination': destination,
+        'destination': dest,
         'currency': 'TJS',
         'token': API_TOKEN,
-        'limit': 10
+        'limit': 15
     }
     
     try:
         response = requests.get(url, params=params, timeout=15)
         return jsonify(response.json())
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+    except:
+        return jsonify({"success": False})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
