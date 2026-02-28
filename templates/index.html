@@ -2,89 +2,38 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Avia App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avia Search</title>
     <style>
-        :root { --main: #00c853; --dark: #1b5e20; --gray: #f5f5f5; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eaeff2; margin: 0; padding-bottom: 30px; }
-        
-        /* Header мисли Somon Air */
-        .app-bar { background: linear-gradient(135deg, #00c853, #00e676); color: white; padding: 25px 20px; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,200,83,0.3); }
-        
-        .search-card { background: white; margin: -20px 15px 15px 15px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        
-        select, button { width: 100%; padding: 15px; margin: 5px 0; border-radius: 12px; border: 1px solid #eee; font-size: 16px; -webkit-appearance: none; }
-        button { background: #263238; color: white; font-weight: bold; margin-top: 10px; border: none; }
-
-        /* Стили чиптаҳо мисли стандарти ҷаҳонӣ */
-        .ticket { background: white; margin: 15px; padding: 20px; border-radius: 20px; position: relative; overflow: hidden; }
-        .price { font-size: 24px; color: #333; font-weight: 900; margin-bottom: 10px; }
-        
-        .flight-path { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; }
-        .city-code { font-size: 18px; font-weight: bold; color: #2c3e50; }
-        .line { flex-grow: 1; height: 1px; border-top: 2px dashed #ddd; margin: 0 15px; position: relative; }
-        .line::after { content: '✈️'; position: absolute; top: -12px; left: 45%; font-size: 14px; }
-
-        .details { display: flex; justify-content: space-between; font-size: 13px; color: #7f8c8d; }
-        .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
-        
-        .buy-btn { display: block; background: #ff9100; color: white; text-align: center; padding: 15px; text-decoration: none; border-radius: 15px; font-weight: bold; margin-top: 15px; }
-        
-        /* Анимация барои пайдо шудани чиптаҳо */
-        .ticket { animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        select, button { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ddd; }
+        button { background: #00c853; color: white; border: none; font-weight: bold; }
+        .ticket { border-left: 5px solid #00c853; padding: 15px; background: white; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-
-<div class="app-bar">
-    <h2 style="margin:0;">AviaSearch</h2>
-    <p style="margin:5px 0 0 0; opacity:0.9;">Стандарти ҷаҳонӣ</p>
-</div>
-
-<div class="search-card">
-    <form method="GET">
-        <div style="display:flex; gap:10px;">
-            <select name="lang" onchange="this.form.submit()">
-                <option value="tg" {% if lang=='tg' %}selected{% endif %}>TJ</option>
-                <option value="ru" {% if lang=='ru' %}selected{% endif %}>RU</option>
-                <option value="en" {% if lang=='en' %}selected{% endif %}>EN</option>
+    <div class="card">
+        <h2>Ҷустуҷӯи чипта</h2>
+        <form method="GET">
+            <select name="origin">
+                {% for c in cities %}<option value="{{c.code}}">{{c.name}}</option>{% endfor %}
             </select>
-            <select name="currency" onchange="this.form.submit()">
-                <option value="TJS" {% if currency=='TJS' %}selected{% endif %}>TJS</option>
-                <option value="RUB" {% if currency=='RUB' %}selected{% endif %}>RUB</option>
-                <option value="USD" {% if currency=='USD' %}selected{% endif %}>USD</option>
+            <select name="destination">
+                {% for c in cities %}<option value="{{c.code}}">{{c.name}}</option>{% endfor %}
             </select>
-        </div>
-        <select name="origin">
-            {% for c in cities %}<option value="{{c.code}}" {% if request.args.get('origin')==c.code %}selected{% endif %}>{{c.name}}</option>{% endfor %}
-        </select>
-        <select name="destination">
-            {% for c in cities %}<option value="{{c.code}}" {% if request.args.get('destination')==c.code %}selected{% endif %}>{{c.name}}</option>{% endfor %}
-        </select>
-        <button type="submit">{{ t.search }}</button>
-    </form>
-</div>
-
-{% for f in flights %}
-<div class="ticket">
-    <div class="price">{{ f.price }} {{ currency }}</div>
-    <div class="badge">{{ t.direct }}</div>
-    
-    <div class="flight-path">
-        <div class="city-code">{{ f.origin }}</div>
-        <div class="line"></div>
-        <div class="city-code">{{ f.destination }}</div>
+            <button type="submit">Ҷустуҷӯ</button>
+        </form>
     </div>
-    
-    <div class="details">
-        <div>{{ t.airline }}: <b>{{ f.airline }}</b></div>
-        <div>{{ t.dep }}: <b>{{ f.departure_at.split('T')[0] }}</b></div>
-    </div>
-    
-    <a class="buy-btn" href="https://www.aviasales.com{{ f.link }}?marker=701004" target="_blank">{{ t.buy }}</a>
-</div>
-{% endfor %}
 
+    {% if error_msg %}<p style="color:red; text-align:center;">{{ error_msg }}</p>{% endif %}
+
+    {% for f in flights %}
+    <div class="ticket">
+        <h3>{{ f.price }} {{ currency }}</h3>
+        <p>Ширкат: {{ f.airline }}</p>
+        <p>Сана: {{ f.departure_at }}</p>
+    </div>
+    {% endfor %}
 </body>
 </html>
