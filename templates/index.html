@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avia Tickets</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, input, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #007bff; color: white; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>✈️ AviaSearch</h2>
+    
+    <form method="GET">
+        <select name="lang">
+            <option value="tg">Тоҷикӣ</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+        </select>
+        
+        <select name="currency">
+            <option value="TJS">TJS (Сомонӣ)</option>
+            <option value="USD">USD (Доллар)</option>
+            <option value="RUB">RUB (Рубли русӣ)</option>
+        </select>
+
+        <input type="text" name="origin" placeholder="Аз куҷо? (Масалан: DYU)" required>
+        <input type="text" name="destination" placeholder="Ба куҷо? (Масалан: MOW)" required>
+        <button type="submit">Ҷустуҷӯ / Найти / Search</button>
+    </form>
+
+    <hr>
+
+    {% for flight in flights %}
+    <div class="card">
+        <h3>Нарх: {{ flight.price }} {{ currency }}</h3>
+        <p>Ширкат: {{ flight.airline }}</p>
+        <p>Парвоз: {{ flight.departure_at }}</p>
+        <a href="https://www.aviasales.com{{ flight.link }}" target="_blank">Харидан</a>
+    </div>
+    {% endfor %}
+</body>
+</html>
