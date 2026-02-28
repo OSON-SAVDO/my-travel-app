@@ -3,107 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Avia Search Premium</title>
+    <title>AviaSearch</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --main: #2ecc71; --bg: #f5f7fa; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 30px; }
-        
-        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 80px 20px; border-radius: 0 0 35px 35px; color: white; text-align: center; }
-        .search-card { background: white; margin: -55px 20px 20px 20px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        .input-row { background: #f1f3f5; padding: 15px; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; cursor: pointer; }
-        .input-row i { color: #95a5a6; margin-right: 15px; }
-        .val { font-weight: 700; font-size: 16px; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; }
 
-        .btn-find { background: var(--main); color: white; border: none; width: 100%; padding: 18px; border-radius: 20px; font-size: 18px; font-weight: 800; margin-top: 10px; }
-
-        /* Дизайни чипта маҳз мисли видео сонияи 0:32 */
-        .ticket { background: white; margin: 15px; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
-        .t-price { font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 15px; display: block; }
+        .header { background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 40px 20px 70px 20px; border-radius: 0 0 30px 30px; color: white; text-align: center; }
         
-        .t-info { display: flex; justify-content: space-between; align-items: center; }
-        .t-time { font-size: 20px; font-weight: 800; color: #333; }
-        .t-city { font-size: 12px; color: #95a5a6; font-weight: 600; margin-top: 4px; }
+        /* Search Box */
+        .search-container { background: white; margin: -45px 20px 20px 20px; padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .input-group { background: #f1f3f5; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; align-items: center; }
+        .input-group i { color: #95a5a6; margin-right: 15px; width: 20px; }
+        select { border: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; outline: none; }
         
-        .t-path { flex-grow: 1; text-align: center; margin: 0 20px; position: relative; }
-        .t-path-line { border-top: 2px solid #eee; width: 100%; display: block; margin-top: 10px; }
-        .t-path-plane { position: absolute; top: -14px; left: 45%; background: white; padding: 0 5px; font-size: 14px; }
-        .t-duration { font-size: 11px; color: #2ecc71; margin-top: 5px; font-weight: bold; }
+        .btn-search { background: var(--main); color: white; border: none; width: 100%; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; }
 
-        .t-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f9f9f9; }
-        .airline-tag { display: flex; align-items: center; font-weight: 700; color: #7f8c8d; font-size: 13px; }
-        .btn-buy { background: #ff9f43; color: white; padding: 10px 22px; border-radius: 15px; text-decoration: none; font-weight: 800; font-size: 14px; }
+        /* Tickets (сонияи 0:32) */
+        .ticket-card { background: white; margin: 15px; padding: 20px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .price { font-size: 24px; font-weight: 800; color: #2ecc71; margin-bottom: 15px; }
+        .route-info { display: flex; justify-content: space-between; align-items: center; }
+        .time { font-size: 20px; font-weight: bold; }
+        .city { font-size: 13px; color: #95a5a6; }
+        .path { flex-grow: 1; text-align: center; position: relative; margin: 0 15px; border-top: 2px dashed #eee; margin-top: 10px; }
+        .path::after { content: '✈️'; position: absolute; top: -14px; left: 45%; font-size: 14px; background: white; padding: 0 5px; }
 
-        .skeleton { height: 160px; background: #eee; border-radius: 25px; margin: 20px; animation: pulse 1.5s infinite; }
+        /* Skeleton Loading */
+        .skeleton { height: 150px; background: #eee; border-radius: 20px; margin: 15px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>AviaSearch</h1>
-    <p>Чиптаҳои арзон барои шумо</p>
+    <h1 style="margin:0">AviaSearch</h1>
+    <p style="opacity:0.8; margin-top:5px;">Чиптаҳои арзон барои шумо</p>
 </div>
 
-<div class="search-card">
-    <div class="input-row" onclick="alert('Интихоби шаҳр')">
+<div class="search-container">
+    <div class="input-group">
         <i class="fas fa-plane-departure"></i>
-        <div class="val" id="origin-val">Душанбе (DYU)</div>
+        <select id="origin">
+            <option value="DYU">Душанбе (DYU)</option>
+            <option value="LBD">Хуҷанд (LBD)</option>
+        </select>
     </div>
-    <div class="input-row" onclick="alert('Интихоби шаҳр')">
+    <div class="input-group">
         <i class="fas fa-plane-arrival"></i>
-        <div class="val" id="dest-val">Москва (MOW)</div>
+        <select id="destination">
+            <option value="MOW">Москва (MOW)</option>
+            <option value="TAS">Тошканд (TAS)</option>
+            <option value="IST">Истанбул (IST)</option>
+        </select>
     </div>
-    <button class="btn-find" onclick="loadTickets()">Чиптаҳоро ёфтан</button>
+    <button class="btn-search" onclick="fetchTickets()">Чиптаҳоро ёфтан</button>
+</div>
+
+<div id="loader" style="display:none">
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
 </div>
 
 <div id="results"></div>
 
 <script>
-async function loadTickets() {
-    const resDiv = document.getElementById('results');
-    resDiv.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
-    
+async function fetchTickets() {
+    const results = document.getElementById('results');
+    const loader = document.getElementById('loader');
+    const origin = document.getElementById('origin').value;
+    const dest = document.getElementById('destination').value;
+
+    results.innerHTML = '';
+    loader.style.display = 'block';
+
     try {
-        const response = await fetch('/api/search?origin=DYU&destination=MOW');
+        const response = await fetch(`/api/search?origin=${origin}&destination=${dest}`);
         const data = await response.json();
-        resDiv.innerHTML = '';
+        loader.style.display = 'none';
 
         if(data.success && data.data.length > 0) {
-            data.data.forEach(f => {
-                resDiv.innerHTML += `
-                <div class="ticket">
-                    <span class="t-price">${f.price} TJS</span>
-                    <div class="t-info">
-                        <div>
-                            <div class="t-time">08:30</div>
-                            <div class="t-city">${f.origin}</div>
+            data.data.forEach(flight => {
+                results.innerHTML += `
+                    <div class="ticket-card">
+                        <div class="price">${flight.price} TJS</div>
+                        <div class="route-info">
+                            <div><div class="time">08:00</div><div class="city">${flight.origin}</div></div>
+                            <div class="path"></div>
+                            <div style="text-align:right"><div class="time">12:30</div><div class="city">${flight.destination}</div></div>
                         </div>
-                        <div class="t-path">
-                            <span class="t-path-line"></span>
-                            <span class="t-path-plane">✈️</span>
-                            <div class="t-duration">Парвози мустақим</div>
+                        <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; color:#7f8c8d;">${flight.airline}</span>
+                            <a href="https://www.aviasales.com${flight.link}" target="_blank" 
+                               style="background:#ff9f43; color:white; padding:10px 20px; border-radius:12px; text-decoration:none; font-weight:bold;">Харидан</a>
                         </div>
-                        <div style="text-align:right">
-                            <div class="t-time">12:10</div>
-                            <div class="t-city">${f.destination}</div>
-                        </div>
-                    </div>
-                    <div class="t-footer">
-                        <div class="airline-tag">
-                            <i class="fas fa-shield-alt" style="margin-right:8px; color:#2ecc71"></i>
-                            ${f.airline}
-                        </div>
-                        <a href="https://www.aviasales.com${f.link}" class="btn-buy" target="_blank">Харидан</a>
-                    </div>
-                </div>`;
+                    </div>`;
             });
         } else {
-            resDiv.innerHTML = '<p style="text-align:center; color:gray;">Чипта ёфт нашуд</p>';
+            results.innerHTML = '<p style="text-align:center; color:#95a5a6;">Чипта ёфт нашуд</p>';
         }
-    } catch(e) {
-        resDiv.innerHTML = '<p style="text-align:center; color:red;">Хатогии пайвастшавӣ</p>';
+    } catch (e) {
+        loader.style.display = 'none';
+        results.innerHTML = '<p style="text-align:center; color:red;">Хатогии API</p>';
     }
 }
 </script>
